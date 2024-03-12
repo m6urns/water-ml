@@ -21,3 +21,5 @@ cd /home/mlister/water-ml/notebooks
 
 # Execute the script
 python param_grid_ExtraTreesClassifier.py
+
+conda deactivate
