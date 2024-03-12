@@ -1,9 +1,14 @@
 import os
-os.environ['PYDEVD_DISABLE_FILE_VALIDATION'] = '1'
-
-import pandas as pd 
+import logging
+import pandas as pd
 from sklearn.ensemble import ExtraTreesClassifier
-# from imblearn.ensemble import EasyEnsembleClassifier
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import accuracy_score
+
+# Configure logging
+logging.basicConfig(filename='grid_search.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+os.environ['PYDEVD_DISABLE_FILE_VALIDATION'] = '1'
 
 # Load Datasets
 data_train_raw = pd.read_csv('~/water-ml/datasets/sheet_1.csv')
@@ -52,12 +57,10 @@ param_grid_etc = {
     'class_weight': [None, 'balanced', 'balanced_subsample'],
     'ccp_alpha': [0.0, 0.1, 0.2],
     'max_samples': [None, 0.5, 0.7, 0.9]
-    # 'monotonic_cst': [[1] * X_train.shape[1], [0] * X_train.shape[1], [-1] * X_train.shape[1], None]
 }
 
 # Create an instance of ExtraTreesClassifier
 etc = ExtraTreesClassifier()
-# etc = EasyEnsembleClassifier(n_estimators=10, estimator=ExtraTreesClassifier(max_depth=3, n_estimators=50))
 
 # Perform grid search
 grid_search_etc = GridSearchCV(
@@ -70,15 +73,18 @@ grid_search_etc = GridSearchCV(
 )
 
 # Fit the grid search object
+logging.info('Starting grid search')
 grid_search_etc.fit(X_train, y_train)
 
 # Get the best model and its parameters
 best_etc = grid_search_etc.best_estimator_
 best_params_etc = grid_search_etc.best_params_
+logging.info(f"Best parameters for ExtraTreesClassifier: {best_params_etc}")
 
 # Evaluate the best model on the test set
 y_pred_etc = best_etc.predict(X_test)
 accuracy_etc = accuracy_score(y_test, y_pred_etc)
+logging.info(f"Test set accuracy for ExtraTreesClassifier: {accuracy_etc}")
 
 print(f"Best parameters for ExtraTreesClassifier: {best_params_etc}")
 print(f"Test set accuracy for ExtraTreesClassifier: {accuracy_etc}")
