@@ -13,9 +13,11 @@
 # Example: module load python/3.8
 # or
 # Example: source activate myenv
+source /opt/miniconda3/bin/activate
+conda activate water-ml
 
 # Navigate to your project directory (if necessary)
-cd /home/mlister/water-ml
+cd /home/mlister/water-ml/notebooks
 
 # Execute the script
 python param_grid_ExtraTreesClassifier.py
