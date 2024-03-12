@@ -3,7 +3,7 @@
 #SBATCH --output=grid_search.out   # Output file
 #SBATCH --error=grid_search.err    # Error file
 #SBATCH --time=24:00:00            # Time limit hrs:min:sec
-#SBATCH --partition=batch          # Partition to submit to
+#SBATCH --partition=guru           # Partition to submit to
 #SBATCH --nodes=1                  # Number of nodes
 #SBATCH --ntasks=1                 # Number of tasks (processes)
 #SBATCH --cpus-per-task=16         # Number of CPU cores per task
